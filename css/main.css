@@ -1,0 +1,91 @@
+.title{
+    text-align: center;
+    font-family: Impact, Charcoal, sans-serif;
+    color: #DBD9D9;
+    font-size: 5em;
+    margin-top: 170px;
+}
+
+.title a{
+    color: #B0B0B0;
+}
+
+.clockArea {
+    height: 130px;
+    width: 370px;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin: 15px auto;
+}
+
+#clock{
+    border: 4px solid #555555;
+    border-radius: 200px;
+    font-size: 6em;
+    color: white;
+    background-color: #555555;
+    font-family: Impact, Charcoal, sans-serif;
+    height: 120px;
+    width: 350px;
+    text-align: center;
+}
+
+.inputArea{
+    height: 30px;
+    width: 160px;
+    margin: 10px auto;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+.input{
+    width: 70px;
+    font-size: 2em;
+    border-color: #C8C8C8;
+    border-radius: 60px;
+    text-align: center;
+    color:	#888888;
+}
+
+input:focus{
+    outline: none;
+}
+
+.centerButtons{
+    height: 100px;
+    width: 320px;
+    margin: 20px auto;
+    padding: 10px;
+}
+
+.buttons{
+    font-size: 2.5em;
+    border-radius: 50px;
+    font-family: "Arial Black", Gadget, sans-serif;
+    border:10px solid 	#B0B0B0 ;
+    background-color: #B0B0B0;
+    color: 	#404040;
+    cursor: default;
+    margin-left: 5px;
+}
+
+#start{
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+#start:hover{
+    border-color: #55AA7D;
+    background-color: #55AA7D;
+    color: #FFF;
+}
+
+#reset:hover{
+    border-color: #CC6666;
+    background-color: #CC6666;
+    color: #FFF;
+}
+
+#music{
+    visibility: hidden;
+}
