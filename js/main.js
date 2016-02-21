@@ -1,6 +1,8 @@
  function Clock() {
      this.area = document.getElementById('clock');
      this.audio = new Audio();
+     this.minutesInput = document.getElementById('minutes');
+     this.secondsInput = document.getElementById('seconds');
  }
 
  Clock.prototype.render = function() {
@@ -31,8 +33,24 @@
  };
 
  Clock.prototype.loadInputsVal = function(){
-     this.minutes = document.getElementById('minutes').value;
-     this.seconds = document.getElementById('seconds').value;
+     this.minutes = this.minutesInput.value;
+     this.seconds = this.secondsInput.value;
+ };
+
+ Clock.prototype.checkInputsValue = function(){
+     var flag = false;
+     if(this.minutesInput.value != '0' || this.secondsInput.value != '0') flag = true;
+
+     if(this.minutesInput.value == ""){
+         flag = false;
+         this.minutesInput.style.backgroundColor= "#F7BCBC";
+     }else this.minutesInput.style.backgroundColor= "#FFF";
+
+     if(this.secondsInput.value == ""){
+         this.secondsInput.style.backgroundColor= "#F7BCBC";
+         flag = false;
+     }else this.secondsInput.style.backgroundColor= "#FFF";
+     return flag;
  };
 
  Clock.prototype.stop = function() {
@@ -45,20 +63,24 @@
      this.area.style.backgroundColor = "#555555";
      clearInterval(this.timer);
      this.area.textContent = '00 : 00';
-     document.getElementById('minutes').value = '0';
-     document.getElementById('seconds').value = '0';
+     this.minutesInput.value = '0';
+     this.secondsInput.value = '0';
+     this.minutesInput.style.backgroundColor= "#FFF";
+     this.secondsInput.style.backgroundColor= "#FFF";
      this.stopPlayAudio();
  };
 
  Clock.prototype.start = function() {
-     this.loadInputsVal();
-     if(this.minutes >=0 && this.seconds >=0){
-         this.stop();
-         this.area.style.backgroundColor = "#55AA7D";
-         var self = this;
-         this.timer = setInterval(function () {
-              self.render();
+     if(this.checkInputsValue()) {
+         this.loadInputsVal();
+         if (this.minutes >= 0 && this.seconds >= 0) {
+             this.stop();
+             this.area.style.backgroundColor = "#55AA7D";
+             var self = this;
+             this.timer = setInterval(function () {
+                 self.render();
              }, 1000);
+         }
      }
  };
 
