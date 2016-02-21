@@ -106,8 +106,6 @@
     } else return number;
  };
 
- //Clock.prototype.checkInputs = function
-
  var clock = new Clock();
 
  start.onclick = function(){
