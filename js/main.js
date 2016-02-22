@@ -40,37 +40,45 @@
 
  Clock.prototype.checkInputsValue = function(){
      var flag = false;
-     if(this.minutesInput.value.match(/0/g) !== null && this.minutesInput.value.match(/0/g).length > 1){
-         this.minutesInput.value = "0";
+     var minutesStr = this.minutesInput.value.match(/\d/g);
+     var secondsStr = this.secondsInput.value.match(/\d/g);
+
+     if(this.minutesInput.value.match(/\D/g) !== null){
+         this.minutesInput.value = "00";
+         flag = false;
      }
 
-     if(this.secondsInput.value.match(/0/g) !== null && this.secondsInput.value.match(/0/g).length > 1) {
-         this.secondsInput.value = "0";
+     if(this.secondsInput.value.match(/\D/g) !== null) {
+         this.secondsInput.value = "00";
+         flag = false;
      }
 
-     if(this.minutesInput.value !== '0' || this.secondsInput.value !== '0') flag = true;
+     if (minutesStr !== null&& minutesStr.length == 2 && minutesStr[0] == "0" && minutesStr[1] == "0") {
+         flag = false;
+     }
+     if (secondsStr !== null && secondsStr.length == 2 && secondsStr[0] == "0" && secondsStr[1] == "0") {
+         flag = false;
+     }
+
+     if(this.minutesInput.value !== '00' || this.secondsInput.value !== '00') flag = true;
 
      if(this.minutesInput.value == ""){
          flag = false;
-         this.minutesInput.style.backgroundColor= "#F7BCBC";
      }else this.minutesInput.style.backgroundColor= "#FFF";
 
      if(this.secondsInput.value == ""){
-         this.secondsInput.style.backgroundColor= "#F7BCBC";
          flag = false;
      }else this.secondsInput.style.backgroundColor= "#FFF";
 
      if(this.minutesInput.value > 999){
-         this.minutesInput.style.backgroundColor= "#F7BCBC";
          flag = false;
      }else if ( this.secondsInput.value > 59){
-         this.secondsInput.style.backgroundColor= "#F7BCBC";
          flag = false;
      }
 
      if(flag == false){
         this.alert.className = "alert";
-        this.alert.innerHTML = "Please enter only <strong>numbers</strong> in inputs. <br>For minutes value 0-999, for seconds 0-59";
+        this.alert.innerHTML = "Please enter only <strong>integer numbers</strong> in inputs. <br>For minutes values 0-999, for seconds 0-59";
         document.body.appendChild(this.alert);
      }else if(document.body.contains(this.alert))this.alert.parentNode.removeChild(this.alert);
 
@@ -88,8 +96,8 @@
      this.area.style.backgroundColor = "#555555";
      clearInterval(this.timer);
      this.area.textContent = '00 : 00';
-     this.minutesInput.value = '0';
-     this.secondsInput.value = '0';
+     this.minutesInput.value = '00';
+     this.secondsInput.value = '00';
      this.minutesInput.style.backgroundColor= "#FFF";
      this.secondsInput.style.backgroundColor= "#FFF";
      this.stopPlayAudio();
@@ -123,15 +131,24 @@
      this.loadInputsVal();
      var min = this.addZero(this.minutes);
      var sec = this.addZero(this.seconds);
+     this.minutesInput.value = min;
+     this.secondsInput.value = sec;
      this.area.textContent = min + " : " + sec;
      this.minutesInput.style.backgroundColor= "#FFF";
      this.secondsInput.style.backgroundColor= "#FFF";
  };
 
  Clock.prototype.addZero = function (number) {
-    if(number < 10) {
-        return "0" + number;
-    } else return number;
+    var strNumber = number.toString().match(/\d/g);
+    if(strNumber !== null) {
+        if (strNumber.length == 1) {
+            return "0" + number;
+        } else if (strNumber.length == 3 && strNumber[0] == "0") {
+            return strNumber[1] + strNumber[2];
+        } else if(strNumber.length == 4 && strNumber[0] == "0"){
+            return strNumber[1] + strNumber[2] + strNumber[3];
+        }else return number;
+    }
  };
 
  var clock = new Clock();
@@ -146,7 +163,6 @@
 
  minutes.oninput = function(){
      if(clock.checkInputsValue()) clock.changeClockValue();
-
  };
 
  seconds.oninput = function(){
