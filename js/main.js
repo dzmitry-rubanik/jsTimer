@@ -4,6 +4,7 @@
      this.minutesInput = document.getElementById('minutes');
      this.secondsInput = document.getElementById('seconds');
      this.alert = document.createElement('div');
+     this.timer =  null;
  }
 
  Clock.prototype.render = function() {
@@ -52,6 +53,12 @@
          this.secondsInput.value = "00";
          flag = false;
      }
+     if(minutesStr !== null && minutesStr.length > 3){
+         this.minutesInput.value = minutesStr[0] + minutesStr[1] + minutesStr[2];
+     }
+     if(secondsStr !== null && secondsStr.length > 2){
+         this.secondsInput.value = secondsStr[1] + secondsStr[2];
+     }
 
      if (minutesStr !== null&& minutesStr.length == 2 && minutesStr[0] == "0" && minutesStr[1] == "0") {
          flag = false;
@@ -88,6 +95,7 @@
  Clock.prototype.stop = function() {
      this.area.style.backgroundColor = "#CC6666";
      clearInterval(this.timer);
+     this.timer = null;
      this.stopPlayAudio();
  };
 
@@ -95,6 +103,7 @@
      if(document.body.contains(this.alert))this.alert.parentNode.removeChild(this.alert);
      this.area.style.backgroundColor = "#555555";
      clearInterval(this.timer);
+     this.timer = null;
      this.area.textContent = '00 : 00';
      this.minutesInput.value = '00';
      this.secondsInput.value = '00';
@@ -128,14 +137,16 @@
  };
 
  Clock.prototype.changeClockValue = function (){
-     this.loadInputsVal();
-     var min = this.addZero(this.minutes);
-     var sec = this.addZero(this.seconds);
-     this.minutesInput.value = min;
-     this.secondsInput.value = sec;
-     this.area.textContent = min + " : " + sec;
-     this.minutesInput.style.backgroundColor= "#FFF";
-     this.secondsInput.style.backgroundColor= "#FFF";
+     if(this.timer == null) {
+         this.loadInputsVal();
+         var min = this.addZero(this.minutes);
+         var sec = this.addZero(this.seconds);
+         this.minutesInput.value = min;
+         this.secondsInput.value = sec;
+         this.area.textContent = min + " : " + sec;
+         this.minutesInput.style.backgroundColor = "#FFF";
+         this.secondsInput.style.backgroundColor = "#FFF";
+     }
  };
 
  Clock.prototype.addZero = function (number) {
@@ -168,5 +179,3 @@
  seconds.oninput = function(){
      if(clock.checkInputsValue()) clock.changeClockValue();
  };
-
-
