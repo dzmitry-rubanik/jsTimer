@@ -3,6 +3,7 @@
      this.audio = new Audio();
      this.minutesInput = document.getElementById('minutes');
      this.secondsInput = document.getElementById('seconds');
+     this.alert = document.createElement('div');
  }
 
  Clock.prototype.render = function() {
@@ -39,7 +40,15 @@
 
  Clock.prototype.checkInputsValue = function(){
      var flag = false;
-     if(this.minutesInput.value != '0' || this.secondsInput.value != '0') flag = true;
+     if(this.minutesInput.value.match(/0/g) !== null && this.minutesInput.value.match(/0/g).length > 1){
+         this.minutesInput.value = "0";
+     }
+
+     if(this.secondsInput.value.match(/0/g) !== null && this.secondsInput.value.match(/0/g).length > 1) {
+         this.secondsInput.value = "0";
+     }
+
+     if(this.minutesInput.value !== '0' || this.secondsInput.value !== '0') flag = true;
 
      if(this.minutesInput.value == ""){
          flag = false;
@@ -50,6 +59,21 @@
          this.secondsInput.style.backgroundColor= "#F7BCBC";
          flag = false;
      }else this.secondsInput.style.backgroundColor= "#FFF";
+
+     if(this.minutesInput.value > 999){
+         this.minutesInput.style.backgroundColor= "#F7BCBC";
+         flag = false;
+     }else if ( this.secondsInput.value > 59){
+         this.secondsInput.style.backgroundColor= "#F7BCBC";
+         flag = false;
+     }
+
+     if(flag == false){
+        this.alert.className = "alert";
+        this.alert.innerHTML = "Please enter only <strong>numbers</strong> in inputs. <br>For minutes value 0-999, for seconds 0-59";
+        document.body.appendChild(this.alert);
+     }else if(document.body.contains(this.alert))this.alert.parentNode.removeChild(this.alert);
+
      return flag;
  };
 
@@ -60,6 +84,7 @@
  };
 
  Clock.prototype.reset = function() {
+     if(document.body.contains(this.alert))this.alert.parentNode.removeChild(this.alert);
      this.area.style.backgroundColor = "#555555";
      clearInterval(this.timer);
      this.area.textContent = '00 : 00';
@@ -72,6 +97,7 @@
 
  Clock.prototype.start = function() {
      if(this.checkInputsValue()) {
+         this.changeClockValue();
          this.loadInputsVal();
          if (this.minutes >= 0 && this.seconds >= 0) {
              this.stop();
@@ -93,11 +119,13 @@
      this.audio.pause();
  };
 
- Clock.prototype.changeClockOnChangeInput = function (){
+ Clock.prototype.changeClockValue = function (){
      this.loadInputsVal();
      var min = this.addZero(this.minutes);
      var sec = this.addZero(this.seconds);
      this.area.textContent = min + " : " + sec;
+     this.minutesInput.style.backgroundColor= "#FFF";
+     this.secondsInput.style.backgroundColor= "#FFF";
  };
 
  Clock.prototype.addZero = function (number) {
@@ -117,11 +145,12 @@
  };
 
  minutes.oninput = function(){
-     clock.changeClockOnChangeInput();
+     if(clock.checkInputsValue()) clock.changeClockValue();
+
  };
 
  seconds.oninput = function(){
-     clock.changeClockOnChangeInput();
+     if(clock.checkInputsValue()) clock.changeClockValue();
  };
 
 
