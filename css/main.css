@@ -32,10 +32,11 @@
 
 .inputArea{
     height: 30px;
-    width: 170px;
+    width: 370px;
     margin: 10px auto;
     padding-top: 10px;
     padding-bottom: 20px;
+    text-align: center;
 }
 
 .input{
@@ -45,7 +46,10 @@
     border-radius: 60px;
     text-align: center;
     color:	#888888;
+    display: inline-block;
+    margin-right: 5px;
 }
+
 
 input:focus{
     outline: none;
